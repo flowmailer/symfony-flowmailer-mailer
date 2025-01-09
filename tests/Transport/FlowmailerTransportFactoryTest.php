@@ -23,7 +23,7 @@ class FlowmailerTransportFactoryTest extends TransportFactoryTestCase
         return new FlowmailerTransportFactory($this->getDispatcher(), $this->getClient(), $this->getLogger());
     }
 
-    public function supportsProvider(): iterable
+    public static function supportsProvider(): iterable
     {
         yield [
             new Dsn('flowmailer+api', 'default'),
@@ -41,11 +41,12 @@ class FlowmailerTransportFactoryTest extends TransportFactoryTestCase
         ];
     }
 
-    public function createProvider(): iterable
+    public static function createProvider(): iterable
     {
-        $client     = $this->getClient();
-        $dispatcher = $this->getDispatcher();
-        $logger     = $this->getLogger();
+        $transportFactoryTest = new FlowmailerTransportFactoryTest();
+        $client               = $transportFactoryTest->getClient();
+        $dispatcher           = $transportFactoryTest->getDispatcher();
+        $logger               = $transportFactoryTest->getLogger();
 
         yield [
             new Dsn('flowmailer+api', 'default', self::USER, self::PASSWORD, null, ['account_id' => '123']),
@@ -77,7 +78,7 @@ class FlowmailerTransportFactoryTest extends TransportFactoryTestCase
         ];
     }
 
-    public function unsupportedSchemeProvider(): iterable
+    public static function unsupportedSchemeProvider(): iterable
     {
         yield [
             new Dsn('flowmailer+foo', 'default', self::USER, self::PASSWORD),
@@ -85,7 +86,7 @@ class FlowmailerTransportFactoryTest extends TransportFactoryTestCase
         ];
     }
 
-    public function incompleteDsnProvider(): iterable
+    public static function incompleteDsnProvider(): iterable
     {
         yield [new Dsn('flowmailer+api', 'default', self::USER)];
 
